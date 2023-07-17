@@ -48,19 +48,24 @@ app.get(`/movies/:id`, async (req, res, next) => {  //get a specific movie
   }
 });
 
-app.post(`/movies`, async (req, res, next) => {  //add a new movie
+app.post('/movies_db', async (req, res, next) => {  //add a new movie
   try {
-    const { id, title } = req.body;
-    const newMovie = { id, title };
+    const { title } = req.body;
+    const newMovie = { title };
 
-    await knexInstance(`movies`).insert(newMovie);
-    res.status(201).json(newMovie);
+    const insertedMovie = await knexInstance('movies')
+      .insert(newMovie)
+      .returning(['id', 'title'])
+      .then((movies) => movies[0]);
+
+    res.status(201).json(insertedMovie);
   } catch (error) {
     next(error);
   }
 });
 
-app.patch(`/movies/:id`, async (req, res, next) => {  //update a specific movie
+
+app.patch(`/movies_db/:id`, async (req, res, next) => {  //update a specific movie
   try {
     const { id } = req.params;
 
@@ -82,20 +87,21 @@ app.patch(`/movies/:id`, async (req, res, next) => {  //update a specific movie
   }
 });
 
-app.delete(`/movies/:id`, async (req, res, next) => {  //delete a specific movie
+app.delete('/movies_db/title/:title', async (req, res, next) => {  //delete a specific movie based on title
   try {
-    const { id } = req.params;
+    const { title } = req.params;
 
-    const deletedMovie = await knexInstance(`movies`).where(`id`, id).del();
+    const deletedMovie = await knexInstance('movies').where('title', title).del();
     if (deletedMovie === 0) {
-      return res.status(404).json({ error: `Movie ain't here chief` });
+      return res.status(404).json({ error: `Movie "${title}" not found` });
     } else {
-      res.json({ message: `Movie deleted with extreme prejudice milord` });
+      res.json({ message: `Movie "${title}" deleted with extreme prejudice milord` });
     }
   } catch (error) {
     next(error);
   }
 });
+
 
 app.use((err, req, res) => {  //handles authorized methods
   console.error(err);

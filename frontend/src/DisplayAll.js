@@ -9,7 +9,7 @@ const DisplayMovieTitles = () => {
       .then((response) => response.json())
       .then((data) => setMovies(data))
       .catch((error) => console.error('Error fetching movies:', error));
-  }, []);
+  }, [movies, setMovies]);
 
   return (
     <div>
