@@ -1,0 +1,21 @@
+# Directories
+node_modules/
+dist/
+
+# Environment files
+.env
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-*
+
+# Log files
+*.log
+
+# macOS files
+.DS_Store
+
+# Dependency lock files
+yarn.lock
+package-lock.json
