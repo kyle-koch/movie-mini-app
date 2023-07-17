@@ -6,20 +6,16 @@ const RemoveMovie = () => {
   const [movieTitleToRemove, setMovieTitleToRemove] = useState('');
 
   const handleRemoveMovie = async () => {
-    if (movieTitleToRemove.trim() === '') return; // Do not remove with an empty movie title
-
-    // Make the DELETE request to the API endpoint
+    if (movieTitleToRemove.trim() === '') return;
     try {
       const response = await fetch(`http://localhost:3001/movies_db/title/${encodeURIComponent(movieTitleToRemove)}`, {
         method: 'DELETE',
       });
-
-      // ...
     } catch (error) {
       console.error('Error removing the movie:', error);
     }
   };
-
+  
   return (
     <div>
       <input
