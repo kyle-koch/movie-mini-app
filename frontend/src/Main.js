@@ -1,20 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
-import DisplayMovieTitles from './DisplayOut.js';
 import AppContext from './AppContext.js';
+import DisplayMovieTitles from './DisplayAll.js';
+import Search from './Search.js';
 
 function Main() {
-  const { movies, setMovies } = useContext(AppContext);
-
-  useEffect(() => {
-    fetch('http://localhost:3001/movies/')
-      .then((response) => response.json())
-      .then((data) => setMovies(data))
-      .catch((error) => console.error('Error fetching movies:', error));
-  }, []);
+  const { displayTitles, setDisplayTitles } = useContext(AppContext);
 
   return (
     <>
-      {<DisplayMovieTitles />}
+      <Search /><br />
+      {!displayTitles && <button onClick={() => setDisplayTitles(true)}>Show All Movie Titles</button>}
+      {displayTitles && <DisplayMovieTitles />}
     </>
   );
 }
